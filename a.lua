@@ -403,18 +403,18 @@ local Window = CreateWindow()
 local AutoMation = Window:TreeNode({Title = "Auto 🥕"})
 
 AutoMation:Checkbox({
-    Value = false,
+    Value = states.auto.Value,
     Label = "Enabled",
     OnChanged = function(newValue)
         states.auto.Value = newValue
     end
 })
 
--- AutoMation:Checkbox({
---     Value = false,
---     Label = "Auto Sell",
---     OnChanged = function(newValue)
---         states.autosell.Value = newValue
---     end
--- })
+AutoMation:Checkbox({
+    Value = states.autosell.Value,
+    Label = "Auto Sell",
+    OnChanged = function(newValue)
+        states.autosell.Value = newValue
+    end
+})
 -- loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/JordiTBA/script/refs/heads/main/a.lua'))()
