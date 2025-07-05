@@ -308,6 +308,25 @@ local PrefabsId = "rbxassetid://" .. ReGui.PrefabsId
 ReGui:Init({
 	Prefabs = InsertService:LoadLocalAsset(PrefabsId)
 })
+local Accent = {
+    DarkGreen = Color3.fromRGB(45, 95, 25),
+    Green = Color3.fromRGB(69, 142, 40),
+    Brown = Color3.fromRGB(26, 20, 8),
+}
+
+ReGui:DefineTheme("GardenTheme", {
+	WindowBg = Accent.Brown,
+	TitleBarBg = Accent.DarkGreen,
+	TitleBarBgActive = Accent.Green,
+    ResizeGrab = Accent.DarkGreen,
+    FrameBg = Accent.DarkGreen,
+    FrameBgActive = Accent.Green,
+	CollapsingHeaderBg = Accent.Green,
+    ButtonsBg = Accent.Green,
+    CheckMark = Accent.Green,
+    SliderGrab = Accent.Green,
+})
+
 local function CreateWindow()
 	local Window = ReGui:Window({
 		Title = `{GameInfo.Name} | Depso`,
@@ -327,4 +346,4 @@ auto = AutoMation:Checkbox({
 	Label = "Enabled"
 })
 Main()
-
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/JordiTBA/script/refs/heads/main/a.lua'))()
