@@ -327,4 +327,4 @@ auto = AutoMation:Checkbox({
 	Label = "Enabled"
 })
 Main()
-loadstring(game:HttpGet('https://raw.githubusercontent.com/JordiTBA/script/refs/heads/main/a.lua'))()
+
