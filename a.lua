@@ -338,7 +338,24 @@ end
 -- repeat task.wait() until game:IsLoaded()
 
 local Window = CreateWindow()
-
+local PlantNode = Window:TreeNode({Title="Auto-Plant 🥕"})
+SelectedSeed = PlantNode:Combo({
+	Label = "Seed",
+	Selected = "",
+	GetItems = GetSeedStock,
+})
+AutoPlant = PlantNode:Checkbox({
+	Value = false,
+	Label = "Enabled"
+})
+AutoPlantRandom = PlantNode:Checkbox({
+	Value = false,
+	Label = "Plant at random points"
+})
+PlantNode:Button({
+	Text = "Plant all",
+	Callback = AutoPlantLoop,
+})
 local AutoMation = Window:TreeNode({Title="Auto 🥕"})
 
 auto = AutoMation:Checkbox({
