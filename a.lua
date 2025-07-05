@@ -152,14 +152,7 @@ local function Plant(Position: Vector3, Seed: string)
 	GameEvents.Plant_RE:FireServer(Position, Seed)
 	wait(.3)
 end
-local function MakeLoop(Toggle, Func)
-	coroutine.wrap(function()
-		while wait(.01) do
-			if not Toggle.Value then continue end
-			Func()
-		end
-	end)()
-end
+
 local function GetSeedStock(IgnoreNoStock: boolean?): table
 	local SeedShop = PlayerGui.Seed_Shop
 	local Items = SeedShop:FindFirstChild("Blueberry", true).Parent
@@ -292,26 +285,56 @@ local function checksummer()
             end
         end)
 end
+-- FIXED MAIN FUNCTION
 local function Main()
-        MakeLoop(auto,BuyAllSelectedSeeds)
-        MakeLoop(auto,gplant)
-        MakeLoop(auto,function()HarvestPlants(PlantsPhysical)end)
-        MakeLoop(auto and autosell, AutoSellCheck)
-        MakeLoop(auto,checksummer())
-        	while wait(.1) do
-		GetSeedStock()
-		GetOwnedSeeds()
-	end
-end
-local InsertService = game:GetService("InsertService")
+    -- Create state objects for GUI binding
+    local states = {
+        auto = { Value = false },
+        autosell = { Value = true }
+    }
 
---// Window
+    local function automationLoop()
+        while states.auto.Value do
+            BuyAllSelectedSeeds()
+            gplant()
+            HarvestPlants(PlantsPhysical)
+            if states.autosell.Value then
+                AutoSellCheck()
+            end
+            checksummer()
+            wait(1)
+        end
+    end
+
+    -- Background update loop
+    coroutine.wrap(function()
+        while wait(2) do
+            GetSeedStock()
+            GetOwnedSeeds()
+        end
+    end)()
+
+    -- Start automation when enabled
+    states.auto.Changed:Connect(function()
+        if states.auto.Value then
+            coroutine.wrap(automationLoop)()
+        end
+    end)
+
+    return states
+end
+
+-- FIXED GUI CREATION
+local states = Main()
+
+local InsertService = game:GetService("InsertService")
 local ReGui = loadstring(game:HttpGet('https://raw.githubusercontent.com/depthso/Dear-ReGui/refs/heads/main/ReGui.lua'))()
 local PrefabsId = "rbxassetid://" .. ReGui.PrefabsId
 
 ReGui:Init({
-	Prefabs = InsertService:LoadLocalAsset(PrefabsId)
+    Prefabs = InsertService:LoadLocalAsset(PrefabsId)
 })
+
 local Accent = {
     DarkGreen = Color3.fromRGB(45, 95, 25),
     Green = Color3.fromRGB(69, 142, 40),
@@ -319,35 +342,43 @@ local Accent = {
 }
 
 ReGui:DefineTheme("GardenTheme", {
-	WindowBg = Accent.Brown,
-	TitleBarBg = Accent.DarkGreen,
-	TitleBarBgActive = Accent.Green,
+    WindowBg = Accent.Brown,
+    TitleBarBg = Accent.DarkGreen,
+    TitleBarBgActive = Accent.Green,
     ResizeGrab = Accent.DarkGreen,
     FrameBg = Accent.DarkGreen,
     FrameBgActive = Accent.Green,
-	CollapsingHeaderBg = Accent.Green,
+    CollapsingHeaderBg = Accent.Green,
     ButtonsBg = Accent.Green,
     CheckMark = Accent.Green,
     SliderGrab = Accent.Green,
 })
 
 local function CreateWindow()
-	local Window = ReGui:Window({
-		Title = `{GameInfo.Name} | Depso`,
+    local Window = ReGui:Window({
+        Title = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. " | Depso",
         Theme = "GardenTheme",
-		Size = UDim2.fromOffset(300, 200)
-	})
-	return Window
+        Size = UDim2.fromOffset(300, 200)
+    })
+    return Window
 end
--- repeat task.wait() until game:IsLoaded()
 
 local Window = CreateWindow()
+local AutoMation = Window:TreeNode({Title = "Auto 🥕"})
 
-local AutoMation = Window:TreeNode({Title="Auto 🥕"})
-
-auto = AutoMation:Checkbox({
-	Value = false,
-	Label = "Enabled"
+AutoMation:Checkbox({
+    Value = states.auto.Value,
+    Label = "Enabled",
+    OnChanged = function(newValue)
+        states.auto.Value = newValue
+    end
 })
-Main()
+
+AutoMation:Checkbox({
+    Value = states.autosell.Value,
+    Label = "Auto Sell",
+    OnChanged = function(newValue)
+        states.autosell.Value = newValue
+    end
+})
 -- loadstring(game:HttpGet('https://raw.githubusercontent.com/JordiTBA/script/refs/heads/main/a.lua'))()
