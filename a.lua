@@ -310,7 +310,7 @@ local function CreateWindow()
 	})
 	return Window
 end
-repeat task.wait() until game:IsLoaded()
+--repeat task.wait() until game:IsLoaded()
 
 local Window = CreateWindow()
 
