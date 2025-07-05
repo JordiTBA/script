@@ -298,6 +298,10 @@ local function Main()
         MakeLoop(auto,function()HarvestPlants(PlantsPhysical)end)
         MakeLoop(auto and autosell, AutoSellCheck)
         MakeLoop(auto,checksummer())
+        	while wait(.1) do
+		GetSeedStock()
+		GetOwnedSeeds()
+	end
 end
 local InsertService = game:GetService("InsertService")
 
@@ -338,24 +342,7 @@ end
 -- repeat task.wait() until game:IsLoaded()
 
 local Window = CreateWindow()
-local PlantNode = Window:TreeNode({Title="Auto-Plant 🥕"})
-SelectedSeed = PlantNode:Combo({
-	Label = "Seed",
-	Selected = "",
-	GetItems = GetSeedStock,
-})
-AutoPlant = PlantNode:Checkbox({
-	Value = false,
-	Label = "Enabled"
-})
-AutoPlantRandom = PlantNode:Checkbox({
-	Value = false,
-	Label = "Plant at random points"
-})
-PlantNode:Button({
-	Text = "Plant all",
-	Callback = AutoPlantLoop,
-})
+
 local AutoMation = Window:TreeNode({Title="Auto 🥕"})
 
 auto = AutoMation:Checkbox({
