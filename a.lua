@@ -361,7 +361,6 @@ local function Main()
     return states
 end
 
--- FIXED GUI CREATION
 local states = Main()
 
 local InsertService = game:GetService("InsertService")
@@ -403,16 +402,16 @@ end
 local Window = CreateWindow()
 local AutoMation = Window:TreeNode({Title = "Auto 🥕"})
 
-AutoMation:Checkbox({
-    Value = states.auto.Value,
-    Label = "Enabled",
-    OnChanged = function(newValue)
-        states.auto.Value = newValue
-    end
-})
+-- AutoMation:Checkbox({
+--     Value = false,
+--     Label = "Enabled",
+--     OnChanged = function(newValue)
+--         states.auto.Value = newValue
+--     end
+-- })
 
 AutoMation:Checkbox({
-    Value = states.autosell.Value,
+    Value = false,
     Label = "Auto Sell",
     OnChanged = function(newValue)
         states.autosell.Value = newValue
