@@ -356,7 +356,7 @@ ReGui:DefineTheme("GardenTheme", {
 
 local function CreateWindow()
     local Window = ReGui:Window({
-        Title = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. " | Depso",
+        Title = " | Depso",
         Theme = "GardenTheme",
         Size = UDim2.fromOffset(300, 200)
     })
